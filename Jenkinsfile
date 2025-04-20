@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/sumitkumar2005/FinanceApp.git'
+                git branch: 'main', url: 'https://github.com/sumitkumar2005/FinanceApp.git'
             }
         }
 
@@ -17,7 +17,8 @@ pipeline {
             steps {
                 dir('client') {
                     script {
-                        sh 'docker build -t $CLIENT_IMAGE .'
+                        // Use double quotes for env variable expansion
+                        sh "docker build -t ${CLIENT_IMAGE} ."
                     }
                 }
             }
@@ -27,7 +28,7 @@ pipeline {
             steps {
                 dir('server') {
                     script {
-                        sh 'docker build -t $SERVER_IMAGE .'
+                        sh "docker build -t ${SERVER_IMAGE} ."
                     }
                 }
             }
@@ -36,7 +37,8 @@ pipeline {
         stage('Docker Compose Up') {
             steps {
                 script {
-                    sh 'docker-compose up -d --build'
+                    // Ensure we're in the project root
+                    sh "docker-compose up -d --build"
                 }
             }
         }
@@ -44,10 +46,10 @@ pipeline {
 
     post {
         success {
-            echo 'Deployment Successful!'
+            echo '✅ Deployment Successful!'
         }
         failure {
-            echo 'Build Failed!'
+            echo '❌ Build Failed!'
         }
     }
 }

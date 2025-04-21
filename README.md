@@ -36,7 +36,7 @@
    cd Finance-Tracker-web
    npm install
 
-3. **Run the development server:**
+3. **Run the development server:**juhhiuh
 
    ```bash
    npm start

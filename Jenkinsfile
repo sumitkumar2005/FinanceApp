@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        CLIENT_IMAGE = 'client'
-        SERVER_IMAGE = 'server'
+        CLIENT_IMAGE = "client:${BUILD_NUMBER}"
+        SERVER_IMAGE = "server:${BUILD_NUMBER}"
     }
 
     stages {
@@ -13,22 +13,20 @@ pipeline {
             }
         }
 
-        stage('Build Client Docker Image') {
-            steps {
-                dir('client') {
-                    script {
-                        // Use double quotes for env variable expansion
-                        sh "docker build -t ${CLIENT_IMAGE} ."
+        stage('Build Docker Images') {
+            parallel {
+                stage('Build Client Image') {
+                    steps {
+                        dir('client') {
+                            sh "docker build -t ${CLIENT_IMAGE} ."
+                        }
                     }
                 }
-            }
-        }
-
-        stage('Build Server Docker Image') {
-            steps {
-                dir('server') {
-                    script {
-                        sh "docker build -t ${SERVER_IMAGE} ."
+                stage('Build Server Image') {
+                    steps {
+                        dir('server') {
+                            sh "docker build -t ${SERVER_IMAGE} ."
+                        }
                     }
                 }
             }
@@ -37,8 +35,12 @@ pipeline {
         stage('Docker Compose Up') {
             steps {
                 script {
-                    // Ensure we're in the project root
-                    sh "docker-compose up -d --build"
+                    // Pass image tags as env vars for dynamic usage in docker-compose
+                    sh """
+                    CLIENT_IMAGE=${CLIENT_IMAGE} \
+                    SERVER_IMAGE=${SERVER_IMAGE} \
+                    docker-compose -f docker-compose.prod.yml up -d --build
+                    """
                 }
             }
         }
@@ -46,10 +48,14 @@ pipeline {
 
     post {
         success {
-            echo '✅ Deployment Successful!'
+            echo 'Deployment Successful!'
         }
         failure {
-            echo '❌ Build Failed!'
+            echo 'Build Failed!'
+        }
+        cleanup {
+            echo 'Cleaning up Docker'
+            sh 'docker system prune -f'
         }
     }
 }

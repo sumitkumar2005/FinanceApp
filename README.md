@@ -33,11 +33,11 @@
 2. **Install dependencies:**
 
    ```bash
-   cd Finance-Tracker-web
+   cd Finance-Tracker-webfdjgfdkjfdebf
    npm install
 
 3. **Run the development server:**juhhiuh
 
-   ```bash
+   ```bashjhjhjhkjh
    npm start
-jdnfkednfknenfdonssdsd
+jdnfkednfknenfdonssdsd skndklnvkdn

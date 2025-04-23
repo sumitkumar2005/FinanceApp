@@ -7,15 +7,9 @@ pipeline {
     }
 
     stages {
-        stage('Clean Workspace') {
+        stage('Init') {
             steps {
-                cleanWs()
-            }
-        }
-
-        stage('Clone Repo') {
-            steps {
-                git branch: 'main', url: 'https://github.com/sumitkumar2005/FinanceApp.git'
+                echo 'Repository is already checked out by Jenkins (Pipeline from SCM)'
             }
         }
 
@@ -32,13 +26,13 @@ pipeline {
 
     post {
         success {
-            echo 'Deployment Successful'
+            echo '✅ Deployment Successful'
         }
         failure {
-            echo 'Build Failed'
+            echo '❌ Build Failed'
         }
         cleanup {
-            echo 'Cleaning up Docker'
+            echo '🧹 Cleaning up Docker'
             sh 'docker system prune -f'
         }
     }

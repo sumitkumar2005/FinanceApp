@@ -36,6 +36,6 @@ app.post('/createUser', async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log(`Server listening at 3001`);
+app.listen(5000, '0.0.0.0', () => {
+  console.log(`Server listening at 5000`);
 });

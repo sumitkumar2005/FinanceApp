@@ -28,10 +28,10 @@ pipeline {
 
     post {
         success {
-            echo 'Deployment Successful!'
+            echo 'Deployment Successful'
         }
         failure {
-            echo 'Build Failed!'
+            echo 'Build Failed'
         }
         cleanup {
             echo 'Cleaning up Docker'

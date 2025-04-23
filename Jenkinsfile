@@ -7,9 +7,10 @@ pipeline {
     }
 
     stages {
-        stage('Init') {
+        stage('Initialize') {
             steps {
-                echo 'Repository is already checked out by Jenkins (Pipeline from SCM)'
+                echo '✅ Repository already checked out by Jenkins'
+                sh 'ls -la'
             }
         }
 
@@ -17,6 +18,7 @@ pipeline {
             steps {
                 script {
                     sh """
+                        echo '🔧 Building and starting containers...'
                         CLIENT_IMAGE=${CLIENT_IMAGE} SERVER_IMAGE=${SERVER_IMAGE} docker-compose up -d --build
                     """
                 }
@@ -26,14 +28,14 @@ pipeline {
 
     post {
         success {
-            echo '✅ Deployment Successful'
+            echo '🎉 Deployment Successful!'
         }
         failure {
-            echo '❌ Build Failed'
+            echo '❌ Build Failed!'
         }
         cleanup {
-            echo '🧹 Cleaning up Docker'
-            sh 'docker system prune -f'
+            echo '🧹 Cleaning up Docker...'
+            sh 'docker system prune -f || true'
         }
     }
 }

@@ -7,6 +7,12 @@ pipeline {
     }
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
         stage('Clone Repo') {
             steps {
                 git branch: 'main', url: 'https://github.com/sumitkumar2005/FinanceApp.git'
@@ -17,9 +23,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    export CLIENT_IMAGE=${CLIENT_IMAGE}
-                    export SERVER_IMAGE=${SERVER_IMAGE}
-                    docker-compose up -d --build
+                        CLIENT_IMAGE=${CLIENT_IMAGE} SERVER_IMAGE=${SERVER_IMAGE} docker-compose up -d --build
                     """
                 }
             }

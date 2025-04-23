@@ -9,8 +9,11 @@ pipeline {
     stages {
         stage('Initialize') {
             steps {
-                echo '✅ Repository already checked out by Jenkins'
+                echo '✅ Checking workspace contents and Git status...'
+                sh 'pwd'
                 sh 'ls -la'
+                sh 'ls -la .git || echo ".git folder not found!"'
+                sh 'git status || echo "Not a Git repository!"'
             }
         }
 

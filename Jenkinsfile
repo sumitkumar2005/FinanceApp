@@ -1,10 +1,7 @@
 pipeline {
     agent any
 
-    // Prevent Jenkins from skipping the default Git checkout
-    options {
-        skipDefaultCheckout(false)
-    }
+    
 
     environment {
         CLIENT_IMAGE = "client:${BUILD_NUMBER}"
@@ -14,22 +11,12 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo '📥 Cloning the Git repository...'
-                // Explicit Git checkout (replace "main" with your actual branch if needed)
+    
                 git branch: 'main', url: 'https://github.com/sumitkumar2005/FinanceApp.git'
             }
         }
 
-        stage('Initialize') {
-            steps {
-                echo '✅ Checking workspace and Git status...'
-                sh 'pwd'
-                sh 'ls -la'
-                sh 'ls -la .git || echo ".git folder not found!"'
-                sh 'git rev-parse --is-inside-work-tree || echo "Not in a Git repo!"'
-                sh 'git config --get remote.origin.url || echo "Remote URL not set!"'
-            }
-        }
+     
 
         stage('Docker Compose Up') {
             steps {
@@ -45,14 +32,11 @@ pipeline {
 
     post {
         success {
-            echo '🎉 Deployment Successful!'
+            echo 'Deployment Done'
         }
         failure {
-            echo '❌ Build Failed!'
+            echo 'Build Failed'
         }
-        cleanup {
-            echo '🧹 Cleaning up Docker...'
-            sh 'docker system prune -f || true'
-        }
+        
     }
 }

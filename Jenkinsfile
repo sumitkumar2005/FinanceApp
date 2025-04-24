@@ -9,12 +9,12 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
+        // stage('Checkout') {
+        //     steps {
     
-                git branch: 'main', url: 'https://github.com/sumitkumar2005/FinanceApp.git'
-            }
-        }
+        //         git branch: 'main', url: 'https://github.com/sumitkumar2005/FinanceApp.git'
+        //     }
+        // }
 
      
 
